@@ -24,6 +24,7 @@ def drop_tables():
 def seed_tables():
     users = [
         User(
+            name="admin",
             email="admin@email.com",
             password=bcrypt.generate_password_hash('123456').decode('utf-8'),
             is_admin=True
@@ -109,37 +110,37 @@ def seed_tables():
     ratings = [
         Rating(
             date=date.today(),
-            user_rating=users[4],
+            user_rating=4,
             user=users[0],
             movie=movies[0]
         ),
         Rating(
             date=date.today(),
-            user_rating=users[7],
+            user_rating=7,
             user=users[1],
             movie=movies[1]
         ),
         Rating(
             date=date.today(),
-            user_rating=users[8],
+            user_rating=8,
             user=users[1],
             movie=movies[2]
         ),
         Rating(
             date=date.today(),
-            user_rating=users[10],
+            user_rating=10,
             user=users[2],
             movie=movies[1]
         ),
         Rating(
             date=date.today(),
-            user_rating=users[5],
+            user_rating=5,
             user=users[2],
             movie=movies[3]
         ),
         Rating(
             date=date.today(),
-            user_rating=users[9],
+            user_rating=9,
             user=users[3],
             movie=movies[2]
         )

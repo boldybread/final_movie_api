@@ -9,6 +9,7 @@ class Watchlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     watchlist_title = db.Column(db.String(20))
 
+    # FKs linking to Movie/User tables
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     movie_id = db.Column(db.Integer, db.ForeignKey("movie.id"), nullable=False)
 

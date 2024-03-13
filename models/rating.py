@@ -11,7 +11,7 @@ class Rating(db.Model):
     __tablename__ = "ratings"
 
     # structure of table, each column
-    id = db.Column(db.Integer, primary_key=True)
+    rating_id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date) # Date the rating was added
     user_rating = db.Column(db.Integer)
 
@@ -37,7 +37,7 @@ class RatingSchema(ma.Schema):
     movies = fields.List(fields.Nested('MovieSchema', exclude=['rating']))
 
     class Meta:
-        fields = ('id', 'date', 'user_rating', 'user', 'movies')
+        fields = ('rating_id', 'date', 'user_rating', 'user', 'movies')
         ordered = True
 
 # create schema for handling one user, and schema for handling many users

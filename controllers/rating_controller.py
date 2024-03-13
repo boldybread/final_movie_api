@@ -7,7 +7,7 @@ from init import db
 from models.rating import Rating, ratings_schema, rating_schema
 from models.movie import Movie
 from models.user import User
-from controller.rating_controller import ratings_bp
+from controllers.watchlist_controller import watchlists_bp
 
 ratings_bp = Blueprint('ratings', __name__, url_prefix='/ratings')
 ratings_bp.register_blueprint(watchlists_bp)
