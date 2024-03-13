@@ -15,7 +15,7 @@ def create_watchlist(movie_id):
     movie = db.session.scalar(stmt)
     if movie:
         watchlist = Watchlist(
-            message = body_data.get('message'),
+            watchlist_title = body_data.get('message'),
             user_id = get_jwt_identity(),
             movie = movie
         )
@@ -42,9 +42,9 @@ def delete_watchlist(movie_id, watchlist_id):
 def edit_watchlist(movie_id, watchlist_id):
     body_data = request.get_json()
     stmt = db.select(Watchlist).filter_by(id=watchlist_id, movie_id=movie_id)
-    watchlist = db.session.scalar(stmt)
-    if watchlist:
-        watchlist.message = body_data.get('message') or watchlist.message
+    movie = db.session.scalar(stmt)
+    if movie:
+        movie.title = body_data.get('title') or movie.title
         db.session.commit()
         return watchlist_schema.dump(watchlist)
     else:

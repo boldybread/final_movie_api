@@ -1,8 +1,4 @@
-# I am probably going to remove most of this as movie table is not really going to get changed, theoretically it would have a whole database of movies that would only get added to
-
-
-
-
+# This will be changed to reflect admin access who can add or remove ratings etc.
 
 
 
@@ -17,9 +13,7 @@ from init import db
 from models.movie import Movie, movies_schema, movie_schema
 from models.rating import Rating
 from models.user import User
-from models.watchlist import Watchlist
-from controllers.watchlist_controller import watchlists_bp
-from controllers.rating_controller import ratings_bp
+from controllers.movie_controller import movies_bp
 
 movies_bp = Blueprint('movies', __name__, url_prefix='/movies')
 movies_bp.register_blueprint(watchlists_bp)
