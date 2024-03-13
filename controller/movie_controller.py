@@ -1,13 +1,3 @@
-# I am probably going to remove most of this as movie table is not really going to get changed, theoretically it would have a whole database of movies that would only get added to
-
-
-
-
-
-
-
-
-
 import functools
 
 from flask import Blueprint, request
@@ -18,8 +8,8 @@ from models.movie import Movie, movies_schema, movie_schema
 from models.rating import Rating
 from models.user import User
 from models.watchlist import Watchlist
-from controllers.watchlist_controller import watchlists_bp
-from controllers.rating_controller import ratings_bp
+from controller.watchlist_controller import watchlists_bp
+from controller.rating_controller import ratings_bp
 
 movies_bp = Blueprint('movies', __name__, url_prefix='/movies')
 movies_bp.register_blueprint(watchlists_bp)
@@ -120,8 +110,10 @@ def update_movie(movie_id):
         # update the fields
         movie.title = body_data.get('title') or movie.title
         movie.description = body_data.get('description') or movie.description
-        movie.status = body_data.get('status') or movie.status
-        movie.priority = body_data.get('priority') or movie.priority
+        movie.release = body_data.get('release') or movie.release
+        movie.genre = body_data.get('genre') or movie.genre
+        movie.viewing_platform = body_data.get('viewing_platform') or movie.viewing_platform
+        
         # commit the changes
         db.session.commit()
         # return the updated movie back
