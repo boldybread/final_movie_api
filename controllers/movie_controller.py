@@ -9,7 +9,7 @@ from models.rating import Rating
 from models.user import User
 from models.watchlist import Watchlist
 from controllers.watchlist_controller import watchlists_bp
-from controllers.rating_controller import ratings_bp
+from controllers.rating_controller import rating_bp
 
 movies_bp = Blueprint('movies', __name__, url_prefix='/movies')
 movies_bp.register_blueprint(watchlists_bp)

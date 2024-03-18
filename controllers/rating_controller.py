@@ -9,8 +9,8 @@ from models.movie import Movie
 from models.user import User
 from controllers.watchlist_controller import watchlists_bp
 
-ratings_bp = Blueprint('ratings', __name__, url_prefix='/ratings')
-ratings_bp.register_blueprint(watchlists_bp)
+rating_bp = Blueprint('rating', __name__, url_prefix='/rating')
+rating_bp.register_blueprint(watchlists_bp)
 
 def authorise_as_admin(fn):
     @functools.wraps(fn)
@@ -29,18 +29,18 @@ def authorise_as_admin(fn):
         
     return wrapper
 
-# http://localhost:8080/ratings - GET
-@ratings_bp.route('/')
-def get_all_ratings():
+# http://localhost:8080/rating - GET
+@rating_bp.route('/')
+def get_all_rating():
     stmt = db.select(Rating).order_by(Rating.release.desc())
-    ratings = db.session.scalars(stmt)
-    return ratings_schema.dump(ratings)
+    rating = db.session.scalars(stmt)
+    return ratings_schema.dump(rating)
 
 
-# http://localhost:8080/ratings/4 - GET
-@ratings_bp.route('/<int:rating_id>')
+# http://localhost:8080/rating/4 - GET
+@rating_bp.route('/<int:rating_id>')
 def get_one_rating(rating_id): # rating_id = 4
-    stmt = db.select(Rating).filter_by(id=rating_id) # select * from ratings where id=4
+    stmt = db.select(Rating).filter_by(id=rating_id) # select * from rating where id=4
     rating = db.session.scalar(stmt)
     if rating:
         return rating_schema.dump(rating)
@@ -48,8 +48,8 @@ def get_one_rating(rating_id): # rating_id = 4
         return {"error": f"Rating with id {rating_id} not found"}, 404
     
 
-# http://localhost:8080/ratings - POST
-@ratings_bp.route('/', methods=["POST"])
+# http://localhost:8080/rating - POST
+@rating_bp.route('/', methods=["POST"])
 @jwt_required()
 def create_rating():
     body_data = rating_schema.load(request.get_json())
@@ -66,8 +66,8 @@ def create_rating():
     # return the newly created rating
     return rating_schema.dump(rating), 201
 
-# https://localhost:8080/ratings/6 - DELETE
-@ratings_bp.route('/<int:rating_id>', methods=["DELETE"])
+# https://localhost:8080/rating/6 - DELETE
+@rating_bp.route('/<int:rating_id>', methods=["DELETE"])
 @jwt_required()
 @authorise_as_admin
 def delete_rating(rating_id):
@@ -90,8 +90,8 @@ def delete_rating(rating_id):
         # return error msg
         return {'error': f"Rating with id {rating_id} not found"}, 404
     
-# http://localhost:8080/ratings/5 - PUT, PATCH
-@ratings_bp.route('/<int:rating_id>', methods=["PUT", "PATCH"])
+# http://localhost:8080/rating/5 - PUT, PATCH
+@rating_bp.route('/<int:rating_id>', methods=["PUT", "PATCH"])
 @jwt_required()
 def update_rating(rating_id):
     # Get the data to be updated from the body of the request

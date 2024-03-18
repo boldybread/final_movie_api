@@ -8,7 +8,7 @@ VALID_RATINGS = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 
 # model needs to be class, extends from the model class in SQLAlchemy
 class Rating(db.Model):
-    __tablename__ = "ratings"
+    __tablename__ = "rating"
 
     # structure of table, each column
     rating_id = db.Column(db.Integer, primary_key=True)
@@ -19,8 +19,8 @@ class Rating(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), nullable=False)
 
-    user = db.relationship('User', back_populates='ratings')
-    movies = db.relationship('Movie', back_populates='ratings', cascade='all, delete')
+    user = db.relationship('User', back_populates='rating')
+    movie = db.relationship('Movie', back_populates='rating', cascade='all, delete')
 
 # user schema, also class, using schema class provided by marshmallow
 class RatingSchema(ma.Schema):
@@ -34,7 +34,7 @@ class RatingSchema(ma.Schema):
 # Nested tells marshmallow it is relationship field rather than its own field
     user = fields.Nested('UserSchema', only = ['name', 'email'])
 
-    movies = fields.List(fields.Nested('MovieSchema', exclude=['rating']))
+    movie = fields.List(fields.Nested('MovieSchema', exclude=['rating']))
 
     class Meta:
         fields = ('rating_id', 'date', 'user_rating', 'user', 'movies')
