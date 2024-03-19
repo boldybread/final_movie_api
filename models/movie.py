@@ -21,7 +21,7 @@ class Movie(db.Model):
     viewing_platform = db.Column(db.String)
 
     rating = db.relationship('Rating', back_populates='movie')
-    watchlist = db.relationship('Watchlist', back_populates='movie', cascade='all, delete')
+    watchlist = db.relationship('Watchlist', back_populates='movie')
 
 # movie schema, also class, using schema class provided by marshmallow
 class MovieSchema(ma.Schema):
