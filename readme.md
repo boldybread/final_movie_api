@@ -79,7 +79,285 @@ The ability to map database tables and their relationsips to object classes and 
 
 ## Document all endpoints for your API
 
-lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum 
+## POST /auth/register
+
+### This is to register a new user
+
+name - string containing the username of new user
+
+email - string containing the email of new user
+
+- must be unique and not null
+- else returns error
+
+password - string containing password for new user
+
+- mustn't be null
+- returns error is null violation
+
+is_admin - boolean containing admin status
+
+- is false by default
+
+Integrity errors will catch any null or unique email address violations.
+
+## POST /auth/login
+
+### This is to login a preexisting user
+
+name - string containing username or user
+
+password - string containing user's password
+
+- if successful a JWT is created and returned along with name and admin status
+- if unsuccessful 401 error returned
+
+## POST /movies
+
+### Creates a new movie
+
+title - string containing movie title
+
+description - text containing movie description
+
+release - integer containing year of movie release
+
+- 4 digit limit
+
+genre - string containing genre of movie
+
+- only valid responses allowed
+- else error returned
+
+viewing_platform - string containing genre of movie
+
+- only valid responses allowed
+- else error returned
+
+## POST /rating
+
+### Creates a new rating
+
+date - datetime when rating was created
+
+user_rating - integer rating score for watched movie
+
+- must be valid response between 1 and 10 else error returned
+
+movie_id - integer foreign key obtained from movie table
+
+user_id - integer foreign key obtained from users table
+
+## POST /watchlist
+
+### Creates a new watchlist for a user
+
+watchlist_title - string containing name of watchlist
+
+user_id - integer foreign key from users table
+
+movie - checks if movie exists:
+
+- if exists, retrieves data from movie table
+
+- else returns error 404
+
+## GET /movies
+
+### Retrieves all movies from Table movie
+
+Checks for movies in movie table:
+
+- If successful a list of all movies is displayed.
+
+- If unsuccessful an error message is displayed.
+
+## GET /movies/4
+
+### Retrieves select movie from Table movie with corresponding movie_id
+
+movie_id - Integer ID of the movie to retrieve. If not provided, all movies will be retrieved.
+
+- If successful retrieve movie where movie_id = 4
+
+- If unsuccessful a 404 error message is displayed.
+
+## GET /rating
+
+### Retrieves all ratings from rating table
+
+Checks for ratings in rating table:
+
+- If successful a list of all movies is displayed in order of release.
+
+- If unsuccessful a 404 error message is displayed.
+
+## GET /rating/4
+
+### Retrieves all ratings from Table rating
+
+rating_id - Integer ID of the rating to retrieve. If not provided, all movies will be retrieved.
+
+- If successful, retrieve rating where rating_id = 4
+
+- If unsuccessful a 404 error message is displayed.
+
+## DELETE /movies/6
+
+### Deletes an instance of a movie with corresponding movie_id
+
+check user's admin status
+
+- If they are an admin, check if movie exists
+
+    - if movie exists then delete movie successfully
+
+    - if movie does not exist then return error 404 not found
+
+- If they are not an admin
+
+    - return error 403 not authorised
+
+## DELETE /rating/6
+
+### Deletes an instance of a rating with corresponding rating_id
+
+check user's admin status
+
+- If they are an admin, check if rating exists
+
+    - if rating exists then delete rating successfully
+
+    - if rating does not exist then return error 404 not found
+
+- If they are not an admin
+
+    - return error 403 not authorised
+
+## DELETE /watchlist/6
+
+### Deletes an instance of a watchlist with corresponding watchlist_id
+
+check user's admin status
+
+- If they are an admin, check if watchlist exists
+
+    - if watchlist exists then delete watchlist successfully
+
+    - if watchlist does not exist then return error 404 not found
+
+- If they are not an admin
+
+    - return error 403 not authorised
+
+## PUT PATCH /movies/5
+
+### Modifies all or some existing data in movie table
+
+Get the data to be updated from the body of the request and get the movie from the db whose fields need to be updated
+
+- If movie does not exist return error 404
+
+- If movie exists, check user
+
+    - if not correct user return error 403
+
+    - else update the fields:
+
+title - string containing movie title
+
+description - text containing movie description
+
+release - integer containing year of movie release
+
+- 4 digit limit
+
+genre - string containing genre of movie
+
+- only valid responses allowed
+- else error returned
+
+viewing_platform - string containing genre of movie
+
+- only valid responses allowed
+- else error returned
+
+## PUT PATCH /rating/5
+
+### Modifies all or some existing data in rating table
+
+Get the data to be updated from the body of the request and get the rating from the db whose fields need to be updated
+
+- If rating does not exist return error 404
+
+- If rating exists, check user:
+
+    - if not correct user return error 403 unauthorised user
+
+    - if correct user, update the fields:
+
+date - Datetime indicating when the rating was added
+
+user_rating - Integer between 1 and 10 indicating user's rating of movie watched
+
+- If user_rating not between 1 and 10 validation error returned
+
+## PUT PATCH /watchlist/5
+
+### Modifies all or some existing data in watchlist table
+
+Get the data to be updated from the body of the request and get the rating from the db whose fields need to be updated
+
+- If watchlist does not exist return error 404
+
+- If watchlist exists, check user:
+
+    - if not correct user return error 403 unauthorised user
+
+    - if correct user, update the fields:
+
+watchlist_title - String containing watchlist title
+
+movie_id - Integer containing the movie id to be added to the watchlist
+
+- Must exist else return 404 error
+
+## Error Handling for Endpoints
+
+### Error handling was used for some endpoints
+
+Some examples of error handling code from main.py lines 25-36:
+
+```py
+    @app.errorhandler(400)
+    def bad_request(err):
+        return {"error": str(err)}, 400
+    
+    @app.errorhandler(404)
+    def not_found(err):
+        return {"error": str(err)}, 404
+
+    @app.errorhandler(ValidationError)
+    def validation_error(error):
+        return {"error": error.messages}, 400
+```
+
+The following error code is from movie_controller.py lines 122-124 and returns an error if a movie cannot be found matching the supplied movie_id:
+
+```py
+    else:
+        return {'error': f'Movie with id {movie_id} not found'}, 404
+```
+
+The following error code is from auth_controller.py lines 37-42 and returns an error if a user's info is not null or not unique where required to be:
+
+```py
+    except IntegrityError as err:
+        if err.orig.pgcode == errorcodes.NOT_NULL_VIOLATION:
+            return {"error": f"The {err.orig.diag.column_name} is required"}
+        if err.orig.pgcode == errorcodes.UNIQUE_VIOLATION:
+            return {"error": "Email address already in use"}, 409
+```
 
 ## An ERD for Movie API
 

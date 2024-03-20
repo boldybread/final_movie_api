@@ -20,7 +20,7 @@ class Rating(db.Model):
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), nullable=False)
 
     user = db.relationship('User', back_populates='rating')
-    movie = db.relationship('Movie', back_populates='rating', cascade='all, delete')
+    movie = db.relationship('Movie', back_populates='rating')
 
 # user schema, also class, using schema class provided by marshmallow
 class RatingSchema(ma.Schema):

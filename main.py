@@ -45,4 +45,10 @@ def create_app():
     from controllers.movie_controller import movies_bp
     app.register_blueprint(movies_bp)
 
+    from controllers.watchlist_controller import watchlists_bp
+    app.register_blueprint(watchlists_bp)
+
+    from controllers.rating_controller import rating_bp
+    app.register_blueprint(rating_bp)
+
     return app

@@ -89,19 +89,9 @@ def seed_tables():
             movie=movies[0]
         ),
         Watchlist(
-            watchlist_title="Watchlist 1",
-            user=users[0],
-            movie=movies[1]
-        ),
-        Watchlist(
             watchlist_title="My Watchlist",
             user=users[1],
             movie=movies[1]
-        ),
-        Watchlist(
-            watchlist_title="My Watchlist",
-            user=users[1],
-            movie=movies[2]
         ),
         Watchlist(
             watchlist_title="Munnies Movies",
@@ -113,16 +103,6 @@ def seed_tables():
             user=users[3],
             movie=movies[1]
         ),
-        Watchlist(
-            watchlist_title="Cool watchlist",
-            user=users[3],
-            movie=movies[2]
-        ),
-        Watchlist(
-            watchlist_title="Cool watchlist",
-            user=users[3],
-            movie=movies[3]
-        )
     ]
 
     db.session.add_all(watchlists)
@@ -136,12 +116,6 @@ def seed_tables():
         ),
         Rating(
             date=date.today(),
-            user_rating=7,
-            user=users[1],
-            movie=movies[1]
-        ),
-        Rating(
-            date=date.today(),
             user_rating=8,
             user=users[1],
             movie=movies[2]
@@ -151,12 +125,6 @@ def seed_tables():
             user_rating=10,
             user=users[2],
             movie=movies[1]
-        ),
-        Rating(
-            date=date.today(),
-            user_rating=5,
-            user=users[2],
-            movie=movies[3]
         ),
         Rating(
             date=date.today(),

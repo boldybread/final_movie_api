@@ -15,7 +15,6 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
 
     watchlist = db.relationship('Watchlist', back_populates='user', cascade='all, delete')
-
     rating = db.relationship('Rating', back_populates='user', cascade='all, delete')
 
 # user schema, also class, using schema class provided by marshmallow
